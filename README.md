@@ -28,6 +28,8 @@ language: english oder deutsch
 Jeder hat für eine Aufgabe einen eigenen Branch. Da eine Aufgabe erst beendet werden sollte, bevor eine 
 neue begonnen wird, wird es so nicht zu einer Überzahl an Branches kommen.
 
+Eigene Branches dürfen nach eigenem Ermessen mit "development" gemergt werden.
+
 Einen Branch mit "master" mergen darf erstmal nur Leon (ich).
 
 
