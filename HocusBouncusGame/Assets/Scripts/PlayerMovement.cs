@@ -4,14 +4,36 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    void Start()
-    {
-        
-    }
+    // How fast is the player moving.
+    [SerializeField] float speed = .3f;
 
-    // Update is called once per frame
     void Update()
     {
-        
+        /*
+        if (InputManager.aButton())
+        {
+            Debug.Log("A was pressed");
+        }
+        if (InputManager.bButton())
+        {
+            Debug.Log("B was pressed");
+        }
+        if (InputManager.xButton())
+        {
+            Debug.Log("X was pressed");
+        }
+        if (InputManager.yButton())
+        {
+            Debug.Log("Y was pressed");
+        }
+        */
+        transform.position += InputManager.mainJoyStick() * speed;
+
+        bool aButton = Input.GetButton("A Button");
+        Debug.Log(aButton);
+        if(aButton)
+        {
+            Debug.Log(aButton);
+        }
     }
 }
