@@ -30,10 +30,10 @@ public class PlayerMovement : MonoBehaviour
         transform.position += InputManager.mainJoyStick() * speed;
 
         bool aButton = Input.GetButton("A Button");
-        Debug.Log(aButton);
+        
         if(aButton)
         {
-            Debug.Log(aButton);
+            Debug.Log("a button pressed");
         }
     }
 }
