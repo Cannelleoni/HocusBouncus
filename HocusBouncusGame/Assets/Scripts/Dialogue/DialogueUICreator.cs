@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class DialogueUICreator : MonoBehaviour
 {
-    /* Instantiate the necessary elements of the dialogue prefab.
+    /* @author: Leon
+     * Instantiate the necessary elements of the dialogue prefab.
      */
 
     private void Start()
