@@ -5,21 +5,7 @@ using UnityEngine.UI;
 
 public class DialogueUICreator : MonoBehaviour
 {
-    /* The needed elements are: 
-     * speaker1Portrait
-     * speaker2Portrait
-     * 
-     * speaker1Label
-     * speaker1LabelBox
-     * speaker2Label
-     * speaker2LabelBox
-     * 
-     * dialogueBox
-     * text
-     * 
-     * continueButton with label
-     * 
-     * 
+    /* Instantiate the necessary elements of the dialogue prefab.
      */
 
     private void Start()

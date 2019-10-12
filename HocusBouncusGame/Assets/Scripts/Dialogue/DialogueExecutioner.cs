@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class DialogueExecutioner : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    /* All dialogues get saved here. 
+     * Dialogues get called from this script and get repeatedly activated by a current speaker variable as the button click counter cycles through the conversations.
+     * 
+     */
 }
