@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     // How fast is the player moving.
-    [SerializeField] float speed = .3f;
+    [SerializeField] float speed = 5f;
 
     void Update()
     {
@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Y was pressed");
         }
         */
-        transform.position += InputManager.mainJoyStick() * speed;
+        transform.position += InputManager.mainJoyStick() * speed * Time.deltaTime;
 
         bool aButton = Input.GetButton("A Button");
         
