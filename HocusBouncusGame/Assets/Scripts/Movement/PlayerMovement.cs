@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             // The vector lastMovement is initialized.
-            lastMovement = new Vector3(lastHorizontalMovement, 0f, 0f);
+            lastMovement = new Vector3(lastHorizontalMovement, 0f, 0f);         // use to spot change in direction?
 
             // Speed is increased, until it reaches the value 5.
             if (speed < 5)
