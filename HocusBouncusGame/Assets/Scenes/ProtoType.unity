@@ -150,7 +150,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  acceleration: 1
+  acceleration: 2
+  lastHorizontalMovement: 0
+  lastMovement: {x: 0, y: 0, z: 0}
 --- !u!4 &385463218
 Transform:
   m_ObjectHideFlags: 0
