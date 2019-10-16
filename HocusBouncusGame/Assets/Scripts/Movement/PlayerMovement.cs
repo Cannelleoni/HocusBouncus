@@ -14,10 +14,12 @@ public class PlayerMovement : MonoBehaviour {
     // Able to dash.
     bool dashPermit;
     // Counts frame rate until dash is available again. (2 seconds)
-    int dashWait; 
+    int dashWait;
 
+    // Initializing the helping variables.
     void Start() {
-        
+
+        lastHorizontalMovement = 0;
         dashPermit = true;
         dashWait = 0;
     }
@@ -81,8 +83,15 @@ public class PlayerMovement : MonoBehaviour {
 
     // Normal movement with slow acceleration + smooth slow down.
     public void normalMovement() {
+
+        // Shift in direction makes player's speed drop down to one. The remaining speed makes the change of direction smoother.
+        if (lastHorizontalMovement != 0 && lastHorizontalMovement != InputManager.mainHorizontal()) {
+            speed = 1;
+        }
+       
         // If horizontal movement is detected, the speed ist increased depending on the acceleration variable and deltaTime.
         if (InputManager.mainHorizontal() != 0) {
+            
             /* The last horizontal movement variable is saved in lastHorizontalMovement
                This variable is used to keep the player moving for some time when keys are released.
             */
@@ -100,9 +109,13 @@ public class PlayerMovement : MonoBehaviour {
             if (speed < 5) {
                 speed += acceleration * Time.deltaTime;
             }
+
+            // Decrease speed back to "normal" after dashing.
             else if (speed > 5) {
                 speed--;
             }
+
+            // Elude the problem of constant speed change due to float type.
             if (speed <= 6 && speed >= 5) {
                 speed = 5f;
             }
@@ -150,14 +163,21 @@ public class PlayerMovement : MonoBehaviour {
 
     // Makes dash unavailable for certain time.
     public IEnumerator noDashies(int direction) {
+        
+        // Not able to dash right after dashing.
         dashPermit = false;
-        dash(direction);
-        yield return new WaitUntil(() => getDashWait() >= 120);
-        dashPermit = true;
-        setDashWait(0);
-        // dashPermit = true;
-        // yield return null;
 
+        // Dash forward.
+        dash(direction);
+
+        // Suppress dashing for 2 seconds.
+        yield return new WaitUntil(() => getDashWait() >= 120);
+        
+        // Make dashing possible again.
+        dashPermit = true;
+
+        // Set wait-variable back to default.
+        setDashWait(0);
     }
 
     // Instantly stops player's movement.

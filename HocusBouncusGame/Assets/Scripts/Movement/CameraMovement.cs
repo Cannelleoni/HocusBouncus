@@ -9,12 +9,6 @@ public class CameraMovement : MonoBehaviour
     // Saves the players current position.
     [SerializeField] Vector3 playerPosition;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
