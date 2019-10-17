@@ -36,12 +36,12 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         // Dash function is called. Tests direction of dash.
-        if (Input.GetButton("Left Bumper") && dashPermit) {
+        if (InputManager.leftBumper() && dashPermit) {
                 StartCoroutine(noDashies(getLastHorizontalMovement()));
         }
 
         // Instant stop.
-        if (speed > 0 && Input.GetButton("Right Bumper")) {
+        if (speed > 0 && InputManager.rightBumper()) {
             stop();
         }
 
@@ -63,12 +63,7 @@ public class PlayerMovement : MonoBehaviour {
                Debug.Log("Y was pressed");
            }
            */
-
-        bool aButton = Input.GetButton("A Button");
-
-        if (aButton) {
-            Debug.Log("a button pressed");
-        }
+           
     }
 
     // Get method for lastHorizontalMovement.

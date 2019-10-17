@@ -63,6 +63,14 @@ public static class InputManager
         return Input.GetButtonDown("Y Button");
     }
 
+    public static bool leftBumper()
+    {
+        return Input.GetButtonDown("Left Bumper");
+    }
 
+    public static bool rightBumper()
+    {
+        return Input.GetButtonDown("Right Bumper");
+    }
 
 }
