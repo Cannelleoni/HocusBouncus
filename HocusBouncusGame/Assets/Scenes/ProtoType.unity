@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 385463217}
   - component: {fileID: 385463219}
   - component: {fileID: 385463220}
+  - component: {fileID: 385463221}
   m_Layer: 0
   m_Name: PlayerPhysics
   m_TagString: Untagged
@@ -217,6 +218,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.38219997, y: 0.32473087}
   m_EdgeRadius: 0
+--- !u!58 &385463221
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 385463216}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.006812334}
+  serializedVersion: 2
+  m_Radius: 0.15257502
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

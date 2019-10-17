@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour {
     // Acceleration for increasing / decreasing the speed variable.
     [SerializeField] int acceleration = 2;
     // Helping variable that contains last horizontal movement variable used to keep player moving while slowing down.
-    [SerializeField] float lastHorizontalMovement;
+    [SerializeField] int lastHorizontalMovement;
     // Contains the Vector3 of the last movement, used to save the last movement direction.
     [SerializeField] Vector3 lastMovement;
     // Able to dash.
@@ -19,7 +19,9 @@ public class PlayerMovement : MonoBehaviour {
     // Initializing the helping variables.
     void Start() {
 
-        lastHorizontalMovement = 0;
+        // Make dash possible right from the start.
+        setLastHorizontalMovement(1);
+        lastMovement = new Vector3((float)getLastHorizontalMovement(), 0f, 0f);
         dashPermit = true;
         dashWait = 0;
     }
@@ -34,25 +36,14 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         // Dash function is called. Tests direction of dash.
-        if (Input.GetButton("Left Bumper") && InputManager.mainHorizontal() > 0) {
-
-            // Latency between dashes.
-            if (dashPermit) {
-                StartCoroutine(noDashies(1));
-            }
-        }
-        else if (Input.GetButton("Left Bumper") && InputManager.mainHorizontal() < 0) {
-
-            // Latency between dashes.
-            if (dashPermit) {
-                StartCoroutine(noDashies(-1));
-            }
+        if (Input.GetButton("Left Bumper") && dashPermit) {
+                StartCoroutine(noDashies(getLastHorizontalMovement()));
         }
 
-        if (Input.GetKeyDown(KeyCode.B)) {
+        // Instant stop.
+        if (speed > 0 && Input.GetButton("Right Bumper")) {
             stop();
         }
-
 
         /*
            if (InputManager.aButton())
@@ -80,30 +71,39 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
 
+    // Get method for lastHorizontalMovement.
+    public int getLastHorizontalMovement() {
+        return this.lastHorizontalMovement;
+    }
+
+    // Set method for lastHorizontalMovement.
+    public void setLastHorizontalMovement(int lastMove) {
+        this.lastHorizontalMovement = lastMove;
+    }
 
     // Normal movement with slow acceleration + smooth slow down.
     public void normalMovement() {
-
-        // Shift in direction makes player's speed drop down to one. The remaining speed makes the change of direction smoother.
-        if (lastHorizontalMovement != 0 && lastHorizontalMovement != InputManager.mainHorizontal()) {
-            speed = 1;
-        }
        
         // If horizontal movement is detected, the speed ist increased depending on the acceleration variable and deltaTime.
         if (InputManager.mainHorizontal() != 0) {
-            
+
+            // Shift in direction makes player's speed drop down to one. The remaining speed makes the change of direction smoother.
+            if (getLastHorizontalMovement() != 0 && getLastHorizontalMovement() != InputManager.mainHorizontal()) {
+                speed = 1;
+            }
+
             /* The last horizontal movement variable is saved in lastHorizontalMovement
                This variable is used to keep the player moving for some time when keys are released.
             */
             if (InputManager.mainHorizontal() < 0) {
-                lastHorizontalMovement = -1;
+                setLastHorizontalMovement(-1);
             }
             else {
-                lastHorizontalMovement = 1;
+                setLastHorizontalMovement(1);
             }
 
             // The vector lastMovement is initialized.
-            lastMovement = new Vector3(lastHorizontalMovement, 0f, 0f);
+            lastMovement = new Vector3((float) getLastHorizontalMovement(), 0f, 0f);
 
             // Speed is increased, until it reaches the value 5.
             if (speed < 5) {
@@ -134,15 +134,8 @@ public class PlayerMovement : MonoBehaviour {
                 if (speed < 0) {
                     speed = 0;
                 }
-
             }
-
             transform.position += lastMovement * speed * Time.deltaTime;
-        }
-
-        // Instant stop.
-        if (speed > 0 && Input.GetButton("Right Bumper")) {
-            stop();
         }
     }
 
@@ -158,7 +151,7 @@ public class PlayerMovement : MonoBehaviour {
 
     // Dash function (push player forward fast + set speed to max).
     public void dash(int direction) {
-        speed = 15f;
+        speed += 10f;
     }
 
     // Makes dash unavailable for certain time.
