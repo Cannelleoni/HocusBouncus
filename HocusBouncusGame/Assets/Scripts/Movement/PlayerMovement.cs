@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour {
     bool dashPermit;
     // Counts frame rate until dash is available again. (2 seconds)
     int dashWait;
+    //Get access to the player's RigidBody2D component.
+    [SerializeField] Rigidbody2D rb;
 
     // Initializing the helping variables.
     void Start() {
@@ -24,11 +26,14 @@ public class PlayerMovement : MonoBehaviour {
         lastMovement = new Vector3((float)getLastHorizontalMovement(), 0f, 0f);
         dashPermit = true;
         dashWait = 0;
+
+        //The player's rotation is locked. They will always stand upright now.
+        rb.freezeRotation = true;
     }
 
     void Update() {
         
-        normalMovement();
+        
 
         // Counts up frames until dash is available again. (2 seconds)
         if (!dashPermit) {
@@ -44,26 +49,14 @@ public class PlayerMovement : MonoBehaviour {
         if (speed > 0 && InputManager.rightBumper()) {
             stop();
         }
-
-        /*
-           if (InputManager.aButton())
-           {
-               Debug.Log("A was pressed");
-           }
-           if (InputManager.bButton())
-           {
-               Debug.Log("B was pressed");
-           }
-           if (InputManager.xButton())
-           {
-               Debug.Log("X was pressed");
-           }
-           if (InputManager.yButton())
-           {
-               Debug.Log("Y was pressed");
-           }
-           */
            
+    }
+
+    private void FixedUpdate()
+    {
+        normalMovement();
+
+
     }
 
     // Get method for lastHorizontalMovement.
@@ -118,7 +111,8 @@ public class PlayerMovement : MonoBehaviour {
             /* For moving the vector lastMovement is used, not the vector InputManager.mainJoyStick().
                The other vector was problematic each time the key was released. (value ca. 0,04 -> no visual movement)
              */
-            transform.position += lastMovement * speed * Time.deltaTime;
+            // transform.position += lastMovement * speed * Time.deltaTime;
+            rb.velocity = new Vector2(lastMovement.x * speed, rb.velocity.y);
         }
 
         // If no movement is detected, the speed is decreased depending on the acceleration variable and deltaTime.
@@ -132,6 +126,8 @@ public class PlayerMovement : MonoBehaviour {
             }
             transform.position += lastMovement * speed * Time.deltaTime;
         }
+
+        
     }
 
     // Get method for dashWait.
