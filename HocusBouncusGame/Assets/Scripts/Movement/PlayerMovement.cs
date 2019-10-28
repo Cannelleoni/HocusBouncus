@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
     // How fast is the player moving. Set to 0, as it is increased/decreased when player is moved.
-    [SerializeField] float speed = 0f;
+    public static float speed = 0f;
     // Acceleration for increasing / decreasing the speed variable.
     [SerializeField] int acceleration = 2;
     // Helping variable that contains last horizontal movement variable used to keep player moving while slowing down.
-    [SerializeField] int lastHorizontalMovement;
+    public static int lastHorizontalMovement;
     // Contains the Vector3 of the last movement, used to save the last movement direction.
     [SerializeField] Vector3 lastMovement;
     // Able to dash.
@@ -26,47 +26,46 @@ public class PlayerMovement : MonoBehaviour {
         lastMovement = new Vector3((float)getLastHorizontalMovement(), 0f, 0f);
         dashPermit = true;
         dashWait = 0;
-
-        //The player's rotation is locked. They will always stand upright now.
-        rb.freezeRotation = true;
+        
     }
 
     void Update() {
-        
-        
 
         // Counts up frames until dash is available again. (2 seconds)
         if (!dashPermit) {
             setDashWait(getDashWait() + 1);
-        }
-
-        // Dash function is called. Tests direction of dash.
-        if (InputManager.leftBumper() && dashPermit) {
-                StartCoroutine(noDashies(getLastHorizontalMovement()));
-        }
-
-        // Instant stop.
-        if (speed > 0 && InputManager.rightBumper()) {
-            stop();
-        }
-           
+        }  
     }
 
     private void FixedUpdate()
     {
         normalMovement();
 
+        // Dash function is called. Tests direction of dash.
+        if (InputManager.leftBumper() && dashPermit)
+        {
+            StartCoroutine(noDashies(getLastHorizontalMovement()));
+        }
+
+        // Instant stop.
+        if (speed > 0 && InputManager.rightBumper())
+        {
+            stop();
+        }
+
+        // - - - -
+
 
     }
 
     // Get method for lastHorizontalMovement.
-    public int getLastHorizontalMovement() {
-        return this.lastHorizontalMovement;
+    public static int getLastHorizontalMovement() {
+        return lastHorizontalMovement;
     }
 
     // Set method for lastHorizontalMovement.
-    public void setLastHorizontalMovement(int lastMove) {
-        this.lastHorizontalMovement = lastMove;
+    public static void setLastHorizontalMovement(int lastMove) {
+        lastHorizontalMovement = lastMove;
     }
 
     // Normal movement with slow acceleration + smooth slow down.

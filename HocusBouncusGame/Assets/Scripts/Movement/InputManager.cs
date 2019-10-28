@@ -38,18 +38,36 @@ public static class InputManager
     // -- This section deals with button inputs.
     // The reason we don't simply ask for the Input itself is so we can decide how a positive input shall be used in each situation.
 
+    // Returns wether the A Button has been pressed during a specific frame.
+    public static bool aButtonDown()
+    {
+        return Input.GetButtonDown("A Button");
+    }
+
     // Returns wether the A Button has been pressed.
     public static bool aButton()
     {
-        bool aButton = Input.GetButtonDown("A Button");
-        return aButton;
+        return Input.GetButton("A Button");
     }
 
-    // Returns wether the B Button has been pressed.
-    public static bool bButton()
+    // Returns wether the AButton has been released.
+    public static bool aButtonUp()
+    {
+        return Input.GetButtonUp("A Button");
+    }
+
+    // Returns wether the B Button has been pressed during a specific frame.
+    public static bool bButtonDown()
     {
         return Input.GetButtonDown("B Button");
     }
+
+    // Return wether the B Button has been pressed.
+    public static bool bButton()
+    {
+        return Input.GetButton("B Button");
+    }
+
 
     // Returns wether the X Button has been pressed.
     public static bool xButton()
