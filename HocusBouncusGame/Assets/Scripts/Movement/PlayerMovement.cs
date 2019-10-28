@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
     // How fast is the player moving. Set to 0, as it is increased/decreased when player is moved.
-    public static float speed = 0f;
+    [SerializeField] float speed = 0f;
+    // The average speed.
+    float speedLimit = 5f;
     // Acceleration for increasing / decreasing the speed variable.
     [SerializeField] int acceleration = 2;
     // Helping variable that contains last horizontal movement variable used to keep player moving while slowing down.
@@ -15,6 +17,8 @@ public class PlayerMovement : MonoBehaviour {
     bool dashPermit;
     // Counts frame rate until dash is available again. (2 seconds)
     int dashWait;
+    // The amount of time dash is not usabel.
+    float dashWaitTime = 120f;
     //Get access to the player's RigidBody2D component.
     [SerializeField] Rigidbody2D rb;
 
@@ -70,7 +74,9 @@ public class PlayerMovement : MonoBehaviour {
 
     // Normal movement with slow acceleration + smooth slow down.
     public void normalMovement() {
-       
+        // The vector lastMovement is initialized.
+        lastMovement = new Vector3((float)getLastHorizontalMovement(), 0f, 0f);
+
         // If horizontal movement is detected, the speed ist increased depending on the acceleration variable and deltaTime.
         if (InputManager.mainHorizontal() != 0) {
 
@@ -93,17 +99,17 @@ public class PlayerMovement : MonoBehaviour {
             lastMovement = new Vector3((float) getLastHorizontalMovement(), 0f, 0f);
 
             // Speed is increased, until it reaches the value 5.
-            if (speed < 5) {
+            if (speed < speedLimit) {
                 speed += acceleration * Time.deltaTime;
             }
 
             // Decrease speed back to "normal" after dashing.
-            else if (speed > 5) {
+            else if (speed > speedLimit) {
                 speed--;
             }
 
             // Elude the problem of constant speed change due to float type.
-            if (speed <= 6 && speed >= 5) {
+            if ((speed <= (speedLimit+1)) && (speed >= speedLimit)) {
                 speed = 5f;
             }
 
@@ -154,7 +160,7 @@ public class PlayerMovement : MonoBehaviour {
         dash(direction);
 
         // Suppress dashing for 2 seconds.
-        yield return new WaitUntil(() => getDashWait() >= 120);
+        yield return new WaitUntil(() => getDashWait() >= dashWaitTime);
         
         // Make dashing possible again.
         dashPermit = true;

@@ -22,22 +22,67 @@ public class PlayerJumping : MonoBehaviour
     [SerializeField] float jumpTime;
     //Determines wether the player is currently jumping ot not.
     bool isJumping = false;
-    
+
+    //How often has the player jumped already?
+    int jumpCounter = 1;
+    int jumpCountMax = 3;
 
     void Update()
     {
         // OverlapCircle return true when the playerCharacter is close enough to a ground layer that the distance <= the radius checkRadius. 
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, layerGround);
 
-        // The player is touching the ground and the command to jump was registered during a specific frame.
-        if(isGrounded && (InputManager.aButtonDown()))
+        
+
+        // The timer to check if new jump command has been issued.
+        if (jumpTimeCounter > 0)
         {
+            if(isGrounded && InputManager.aButtonDown())
+            {
+                if(jumpCounter < jumpCountMax)
+                {
+                    
+
+                    print(jumpCounter);
+
+                    // More jump force is applied to the player object.
+                    rb.velocity = Vector2.up * jumpForce * jumpCounter;
+                    jumpCounter++;
+
+                } else
+                {
+                    jumpCounter = 1;
+                    // More jump force is applied to the player object.
+                    rb.velocity = Vector2.up * jumpForce * jumpCounter;
+                }
+                
+            }
+
+            
+            // The timer is being reduced by a constant frame independent value
+            jumpTimeCounter -= Time.deltaTime;
+        }
+        else if (isGrounded && (InputManager.aButtonDown()))    // The player is touching the ground and the command to jump was registered during a specific frame.
+        {
+            if(jumpCounter > jumpCountMax)
+            {
+                jumpCounter = 1;
+            }
             // The player is now jumping.
             isJumping = true;
-            // The timer for keeping the jump button pressed and therefore jumping higher is initialised.
-            jumpTimeCounter = jumpTime;
             // The force to simply jump is applied.
-            rb.velocity = Vector2.up * jumpForce;
+            rb.velocity = Vector2.up * jumpForce * jumpCounter;
+            jumpCounter++;
+        }
+        else
+        {
+            // If no new jump command is registered the player is not jumping anymore.
+            isJumping = false;
+        }
+
+        if(jumpTimeCounter <= 0)
+        {
+            //jumpCounter = 1;
         }
 
         /* Press to jump higher, Method A
@@ -60,9 +105,23 @@ public class PlayerJumping : MonoBehaviour
         */
 
         // Jumping is over when player releases the jump button.
-        if(InputManager.aButtonUp())
+        if (InputManager.aButtonUp())
         {
             isJumping = false;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.collider.gameObject.layer == 8)
+        {
+            if(jumpCounter == jumpCountMax)
+            {
+                jumpCounter = 1;
+            }
+            // The timer for keeping the jump button pressed and therefore jumping higher is initialised.
+            jumpTimeCounter = jumpTime;
+
         }
     }
 }
