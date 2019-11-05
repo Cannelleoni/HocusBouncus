@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour {
     // How fast is the player moving. Set to 0, as it is increased/decreased when player is moved.
     [SerializeField] float speed = 0f;
     // The average speed.
-    float speedLimit = 5f;
+    float speedLimit = 8f;
     // Acceleration for increasing / decreasing the speed variable.
     [SerializeField] int acceleration = 2;
     // Helping variable that contains last horizontal movement variable used to keep player moving while slowing down.

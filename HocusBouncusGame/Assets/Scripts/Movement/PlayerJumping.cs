@@ -10,8 +10,10 @@ public class PlayerJumping : MonoBehaviour
     private bool isGrounded = true;
     // The position of the player's "feet" to check if they're touching the ground.
     [SerializeField] Transform feetPos;
-    // The player's maximum distance from the ground for jumping to be allowed.
-    [SerializeField] float checkRadius;
+    // The player's maximum distance from the ground for jumping to be allowed - original.
+    [SerializeField] float checkRadiusValue;
+    // The player's maximum distance from the ground for jumping to be allowed - current.
+    float checkRadius;
     // The layer to check whether the player object is close enough of not. Therefore can differentiate between water and other environments.
     [SerializeField] LayerMask layerGround;
     // The force influencing the jump.
@@ -27,11 +29,25 @@ public class PlayerJumping : MonoBehaviour
     int jumpCounter = 1;
     int jumpCountMax = 3;
 
+    [SerializeField] SpriteRenderer sr;
+
+    private void Start()
+    {
+        checkRadius = checkRadiusValue;
+    }
+
     void Update()
     {
         // OverlapCircle return true when the playerCharacter is close enough to a ground layer that the distance <= the radius checkRadius. 
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, layerGround);
 
+        if(isGrounded)
+        {
+            sr.color = Color.red;
+        } else
+        {
+            sr.color = Color.white;
+        }
         
 
         // The timer to check if new jump command has been issued.
@@ -47,11 +63,14 @@ public class PlayerJumping : MonoBehaviour
 
                     // More jump force is applied to the player object.
                     rb.velocity = Vector2.up * jumpForce * jumpCounter;
+                    checkRadius += 0.02f;
                     jumpCounter++;
+                    
 
                 } else
                 {
                     jumpCounter = 1;
+                    checkRadius = checkRadiusValue;
                     // More jump force is applied to the player object.
                     rb.velocity = Vector2.up * jumpForce * jumpCounter;
                 }
@@ -67,6 +86,8 @@ public class PlayerJumping : MonoBehaviour
             if(jumpCounter > jumpCountMax)
             {
                 jumpCounter = 1;
+                
+                checkRadius = checkRadiusValue;
             }
             // The player is now jumping.
             isJumping = true;
@@ -118,9 +139,14 @@ public class PlayerJumping : MonoBehaviour
             if(jumpCounter == jumpCountMax)
             {
                 jumpCounter = 1;
+                checkRadius = checkRadiusValue;
             }
             // The timer for keeping the jump button pressed and therefore jumping higher is initialised.
-            jumpTimeCounter = jumpTime;
+            if(jumpCounter > 2)
+            {
+                checkRadius += 0.18f;
+            }
+            jumpTimeCounter = jumpTime + 0.3f;
 
         }
     }
