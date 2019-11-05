@@ -966,6 +966,7 @@ MonoBehaviour:
   speed: 0
   acceleration: 2
   lastMovement: {x: 0, y: 0, z: 0}
+  dashBoost: 13
   rb: {fileID: 385463219}
 --- !u!4 &385463218
 Transform:
@@ -1023,7 +1024,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   jumpForce: 8
-  jumpTime: 0.25
+  jumpTime: 0.2
   sr: {fileID: 1575487011}
 --- !u!58 &385463221
 CircleCollider2D:
@@ -1057,7 +1058,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   rb: {fileID: 385463219}
-  bounceForce: 0
+  bounceForce: 4
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

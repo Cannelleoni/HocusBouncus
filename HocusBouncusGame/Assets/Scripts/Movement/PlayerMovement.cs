@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] Vector3 lastMovement;
     // Able to dash.
     bool dashPermit;
+    // The speed added to the movement when dashing.
+    [SerializeField] float dashBoost = 13f;
     // Counts frame rate until dash is available again. (2 seconds)
     int dashWait;
     // The amount of time dash is not usabel.
@@ -110,7 +112,7 @@ public class PlayerMovement : MonoBehaviour {
 
             // Elude the problem of constant speed change due to float type.
             if ((speed <= (speedLimit+1)) && (speed >= speedLimit)) {
-                speed = 5f;
+                speed = speedLimit;
             }
 
             /* For moving the vector lastMovement is used, not the vector InputManager.mainJoyStick().
@@ -137,7 +139,7 @@ public class PlayerMovement : MonoBehaviour {
 
     // Get method for dashWait.
     public int getDashWait() {
-        return this.dashWait;
+        return dashWait;
     }
 
     // Set method for dashWait.
@@ -147,7 +149,7 @@ public class PlayerMovement : MonoBehaviour {
 
     // Dash function (push player forward fast + set speed to max).
     public void dash(int direction) {
-        speed += 10f;
+        speed += dashBoost;
     }
 
     // Makes dash unavailable for certain time.

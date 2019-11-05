@@ -27,12 +27,14 @@ public class PlayerJumping : MonoBehaviour
 
     //How often has the player jumped already?
     int jumpCounter = 1;
+    // Maximum amount player is allowed to jump in a row.
     int jumpCountMax = 3;
-
+    // The Spriterenderer component of the player object. 
     [SerializeField] SpriteRenderer sr;
 
     private void Start()
     {
+        // Asign the original radius to checkRadius.
         checkRadius = checkRadiusValue;
     }
 
@@ -41,69 +43,69 @@ public class PlayerJumping : MonoBehaviour
         // OverlapCircle return true when the playerCharacter is close enough to a ground layer that the distance <= the radius checkRadius. 
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, layerGround);
 
+        // If the player is touching the ground.
         if(isGrounded)
         {
-            sr.color = Color.red;
+            sr.color = Color.red;       // Change the player's colour to red.
         } else
         {
-            sr.color = Color.white;
+            sr.color = Color.white;     // Change the player's colour to white.
         }
         
 
         // The timer to check if new jump command has been issued.
         if (jumpTimeCounter > 0)
         {
+            // If the timer is still active, the ground is being touched & a jump command has been issued.
             if(isGrounded && InputManager.aButtonDown())
             {
+                // There have been less than 3 linked jumps so far.
                 if(jumpCounter < jumpCountMax)
                 {
-                    
-
-                    print(jumpCounter);
+                    print(jumpCounter);     // Same as Debug.Log();
 
                     // More jump force is applied to the player object.
                     rb.velocity = Vector2.up * jumpForce * jumpCounter;
-                    checkRadius += 0.02f;
+                    // Add 0.02f allowance to make chaining jumps easier.
+                    //checkRadius += 0.02f;
+                    // The player has jumped once more so the counter keeping track of it goes up as well.
                     jumpCounter++;
                     
-
                 } else
                 {
-                    jumpCounter = 1;
-                    checkRadius = checkRadiusValue;
+                    // This is the third jump.
                     // More jump force is applied to the player object.
                     rb.velocity = Vector2.up * jumpForce * jumpCounter;
+                    // The counter gets reset to 1 so the combo can begin anew.
+                    jumpCounter = 1;
+                    // The radius gets reset to the original value.
+                    checkRadius = checkRadiusValue;
                 }
                 
             }
-
-            
             // The timer is being reduced by a constant frame independent value
             jumpTimeCounter -= Time.deltaTime;
         }
         else if (isGrounded && (InputManager.aButtonDown()))    // The player is touching the ground and the command to jump was registered during a specific frame.
-        {
+        {   // Jumping still has to be possible once the timer has reached 0 after all.
             if(jumpCounter > jumpCountMax)
             {
+                // In case the jump counter hasn't been reset yet.
                 jumpCounter = 1;
-                
+                // In case the radius hasn't been reset yet.
                 checkRadius = checkRadiusValue;
             }
             // The player is now jumping.
             isJumping = true;
             // The force to simply jump is applied.
             rb.velocity = Vector2.up * jumpForce * jumpCounter;
+            // The player has jumped once more so the counter keeping track of it goes up as well.
             jumpCounter++;
         }
         else
         {
             // If no new jump command is registered the player is not jumping anymore.
             isJumping = false;
-        }
-
-        if(jumpTimeCounter <= 0)
-        {
-            //jumpCounter = 1;
         }
 
         /* Press to jump higher, Method A
@@ -132,21 +134,39 @@ public class PlayerJumping : MonoBehaviour
         }
     }
 
+    // Gets called evrytime the player comes into contact with a collider.
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // Check if the collider belongs to the layer "Wall"
         if(collision.collider.gameObject.layer == 8)
         {
-            if(jumpCounter == jumpCountMax)
+            // If the player has jumped 3 times
+            if(jumpCounter >= jumpCountMax)
             {
-                jumpCounter = 1;
-                checkRadius = checkRadiusValue;
+                jumpCounter = 1;        // Reset the counter to 1.
+                checkRadius = checkRadiusValue;     // Reset the radius to the original value.
             }
-            // The timer for keeping the jump button pressed and therefore jumping higher is initialised.
+            // If the third jump is next widen the radius to trigger the combo more easily.
             if(jumpCounter > 2)
             {
-                checkRadius += 0.18f;
+               // checkRadius += 0.18f;
             }
-            jumpTimeCounter = jumpTime + 0.3f;
+
+            // The timer for keeping the jump button pressed and therefore jumping higher is initialised.
+            switch(jumpCounter)
+            {
+                case 3:
+                    jumpTimeCounter = jumpTime + 0.15f;
+                    break;
+                case 2:
+                    jumpTimeCounter = jumpTime + 0.05f;
+                    break;
+                case 1:
+                    jumpTimeCounter = jumpTime;
+                    break;
+                default:
+                    break;
+            }
 
         }
     }
