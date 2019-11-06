@@ -942,8 +942,8 @@ GameObject:
   - component: {fileID: 385463221}
   - component: {fileID: 385463219}
   - component: {fileID: 385463217}
-  - component: {fileID: 385463220}
   - component: {fileID: 385463222}
+  - component: {fileID: 385463223}
   m_Layer: 0
   m_Name: PlayerPhysics
   m_TagString: Player
@@ -1005,27 +1005,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &385463220
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 385463216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a46fa8990bb1a1543839f7b04c1008fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 385463219}
-  feetPos: {fileID: 1316887561}
-  checkRadiusValue: 0.12
-  layerGround:
-    serializedVersion: 2
-    m_Bits: 256
-  jumpForce: 8
-  jumpTime: 0.4
-  sr: {fileID: 1575487011}
 --- !u!58 &385463221
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1059,6 +1038,28 @@ MonoBehaviour:
     m_Bits: 512
   rb: {fileID: 385463219}
   bounceForce: 4
+--- !u!114 &385463223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 385463216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b53257c66a9198479df9e32ec1908ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 385463219}
+  feetPos: {fileID: 1316887561}
+  checkFeetRadius: 0.2
+  checkRayRadius: 0.7
+  layerGround:
+    serializedVersion: 2
+    m_Bits: 256
+  jumpForce: 6
+  jumpTimeCounterMax: 120
+  sr: {fileID: 1575487011}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
