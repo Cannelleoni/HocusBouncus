@@ -32,6 +32,8 @@ public class PlayerJumping : MonoBehaviour
     // The Spriterenderer component of the player object. 
     [SerializeField] SpriteRenderer sr;
 
+    
+
     private void Start()
     {
         // Asign the original radius to checkRadius.
@@ -42,6 +44,10 @@ public class PlayerJumping : MonoBehaviour
     {
         // OverlapCircle return true when the playerCharacter is close enough to a ground layer that the distance <= the radius checkRadius. 
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, layerGround);
+        if (Physics2D.Raycast(transform.position, Vector2.down, checkRadiusValue, layerGround))
+        {
+            Debug.Log("grounded");
+        }
 
         // If the player is touching the ground.
         if(isGrounded)
